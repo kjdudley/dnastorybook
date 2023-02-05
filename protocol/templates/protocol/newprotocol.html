@@ -1,0 +1,65 @@
+{% extends 'note/base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <h1>Protocol Builder</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-10">
+	<h2>{{ prv_pk }}</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if procedures %}
+            <div class="list-group" style="height:20vh; overflow:auto;">
+              {% for procedure in procedures %}
+              <a href="#" class="list-group-item list-group-item-action">
+		  <b>{{ procedure.step }}) {{ procedure.procedure }}</b></a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2></h2>
+            <br>
+            </div>
+        {% endif %}
+        </div>
+    </div>    
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-5">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+		{% endif %}
+		{% if form %}
+		<form method="POST">
+		  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" id="title" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Create</button>
+		</form>
+		{% else %}
+		<form method="POST">
+		  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="step">Step</label>
+                    <input type="number" name="step" class="form-control" id="step" value={{ nextstep }}>
+                  </div>
+		  <div class="form-group">
+                    <label for="description">Procedure</label>
+                    <textarea type="text" name="description" class="form-control" id="description" required></textarea>
+                  </div>
+                  <button type="submit" name="add" class="btn btn-primary">Add</button>
+		  <button type="submit" name="save" class="btn btn-primary">Save</button>
+		</form>
+		{% endif %}		
+        </div>
+    </div>
+{% endblock %}

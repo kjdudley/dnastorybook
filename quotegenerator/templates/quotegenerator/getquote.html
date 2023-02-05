@@ -1,0 +1,20 @@
+{% extends 'note/base.html' %}
+
+{% block content %}
+
+<h1>Get Quote</h1>
+
+<form action="{% url 'viewquote' %}">
+  <select name="readlength">
+    <option value="75">75</option>
+    <option value="150" selected="selected">150</option>
+    <option value="300">300</option>
+    <option value="10000">10000</option>
+  </select>
+  <br>
+  <input type="checkbox" name="pairedend"> Paired End
+  <br>
+  <input type="submit" value="Generate Quote">
+</form>
+
+{% endblock %}

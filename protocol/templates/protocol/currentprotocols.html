@@ -1,0 +1,30 @@
+{% extends 'note/base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            {% if projects %}
+                 <h1>{{ protocols.count }} Protocol{{ protocols.count|pluralize }}</h1>
+            {% else %}
+                           <h1>Protocols</h1>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if protocols %}
+            <div class="list-group">
+                {% for protocol in protocols %}
+                <a href="#" class="list-group-item list-group-item-action">
+		  <b>{{ protocol.title }}</b>{% if protocol.protocol_note %} - {{ protocol.protocol_note.notetext }}{% endif %}</a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>Looks like you don't have any protocols. Make some!</h2>
+            <br>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

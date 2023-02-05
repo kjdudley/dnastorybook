@@ -1,0 +1,14 @@
+from django.forms import ModelForm
+from .models import Protocol
+from .models import ProtocolVersion
+from .models import ProtocolVersionStep
+
+class NewProtocolForm(ModelForm):
+    class Meta:
+        model = Protocol
+        fields = ['title']
+
+class CreateProtocolForm(ModelForm):
+    class Meta:
+        model = ProtocolVersionStep
+        fields = ['step', 'procedure']

@@ -1,0 +1,17 @@
+{% extends 'note/base.html' %}
+
+{% block content %}
+
+<h1>Resourses</h1>
+
+<ul>
+  {% for note in notes %}
+  <li>
+    <a href={% url 'viewnote' note.id  %}>
+      {{ note.title }}
+    </a>
+  </li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

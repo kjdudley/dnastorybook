@@ -1,0 +1,30 @@
+{% extends 'note/base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            {% if notes %}
+                 <h1>{{ notes.count }} Resource{{ notes.count|pluralize }}</h1>
+            {% else %}
+                           <h1>Resources</h1>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if notes %}
+            <div class="list-group">
+                {% for note in notes %}
+                <a href="{% url 'viewnote' note.id %}" class="list-group-item list-group-item-action{% if note.archive %} list-group-item-danger{% endif %}">
+		  <b>{{ note.title }}</b>{% if note.notetext %} - {{ note.notetext|truncatechars:30 }}{% endif %}</a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>No Resources available.</h2>
+            <br>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

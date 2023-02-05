@@ -1,0 +1,97 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.db import IntegrityError
+from django.contrib.auth import login, logout, authenticate
+from .forms import NoteForm
+from .models import Note
+from django.contrib.auth.decorators import login_required
+from project.models import Project
+
+# Create your views here.
+
+def home(request):
+    projects = Project.objects.all()
+    return render(request, 'note/home.html', {'projects':projects})
+
+def signupuser(request):
+    if request.method == 'GET':
+        return render(request, 'note/signupuser.html', {'form':UserCreationForm()})
+    else:
+        # Create the User
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
+                user.save()
+                login(request, user)
+                return redirect('livenotes')
+            except IntegrityError:
+                return render(request, 'note/signupuser.html', {'form':UserCreationForm(), 'error':'That username has already been taken. Please choose a new username.'})
+        else:
+            # Tell the user the passwords didn't match
+            return render(request, 'note/signupuser.html', {'form':UserCreationForm(), 'error':'Passwords did not match!'})
+
+def loginuser(request):
+    if request.method == 'GET':
+        return render(request, 'note/loginuser.html', {'form':AuthenticationForm()})
+    else:
+        # Login the User
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'note/loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match!'})
+        else:
+            login(request, user)
+            return redirect('livenotes')
+
+@login_required
+def logoutuser(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
+
+@login_required
+def createnote(request):
+    if request.method == 'GET':
+        return render(request, 'note/createnote.html', {'form':NoteForm()})
+    else:
+        try:
+            
+            form = NoteForm(request.POST)
+            newnote = form.save(commit=False)
+            newnote.user = request.user
+            newnote.save()
+            return redirect('livenotes')
+        except ValueError:
+            return render(request, 'note/loginuser.html', {'form':NoteForm(), 'error':'Bad data passed in. Try again.'})
+
+@login_required
+def livenotes(request):
+    notes = Note.objects.filter(user=request.user, archive=False, project__isnull=True)
+    return render(request, 'note/livenotes.html', {'notes':notes})
+
+@login_required
+def resourcenotes(request):
+    notes = Note.objects.filter(user=request.user, archive=False, project__isnull=False)
+    return render(request, 'note/resourcenotes.html', {'notes':notes})
+
+@login_required
+def viewnote(request, note_pk):
+    note = get_object_or_404(Note, pk=note_pk, user=request.user)
+    if request.method == 'GET':
+        form = NoteForm(instance=note)
+        return render(request, 'note/viewnote.html', {'note':note, 'form':form})
+    else:
+        try:
+            form = NoteForm(request.POST, instance=note)
+            form.save()
+            return redirect('livenotes')
+        except ValueError:
+            return render(request, 'note/viewnote.html', {'note':note, 'form':form, 'error':'Bad data.'})
+
+@login_required
+def resourcenote(request, note_pk):
+    note = get_object_or_404(Note, pk=note_pk, user=request.user)
+    if request.method == 'POST':
+        note.project='RESOURCE'
+        note.save()
+        return redirect('livenotes')

@@ -1,0 +1,26 @@
+{% extends 'note/base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-10">
+	<h1>{{ prv }}</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if procedures %}
+            <div class="list-group">
+                {% for procedure in procedures %}
+                <a href="#" class="list-group-item list-group-item-action">
+		  <b>{{ procedure.step }}) {{ procedure.procedure }}</b></a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>Something went wrong!!</h2>
+            <br>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
