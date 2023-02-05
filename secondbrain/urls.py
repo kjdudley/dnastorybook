@@ -48,6 +48,9 @@ urlpatterns = [
     # Link to Protocol App URLs
     path('protocols/', include('protocol.urls')),
 
+    # Link to JBrowse App URLs
+    path('jbrowse/', include('jbrowse.urls')),
+
     # Link to Quotegenerator App URLs
     path('tools/quote/', include('quotegenerator.urls'), name='quotegenerator'),
 ]
