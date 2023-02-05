@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-a*1p2_9rtxsf*3_t6=sf46txn^!^$4ik40om8#$*+5(8=60!y&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['eldudy.pythonanywhere.com']
+ALLOWED_HOSTS = ['www.dnastorybook.com']
 
 
 # Application definition
