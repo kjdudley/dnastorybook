@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-a*1p2_9rtxsf*3_t6=sf46txn^!^$4ik40om8#$*+5(8=60!y&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['eldudy.pythonanywhere.com']
 
 
 # Application definition
@@ -128,7 +128,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_ROOT = BASE_DIR / 'media'
-
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/login/'
